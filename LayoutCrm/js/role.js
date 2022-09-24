@@ -12,15 +12,54 @@ $(document).ready(function() {
             <td>${value.name}</td>
             <td>${value.description}</td>
            <td>
-           <a href="#" class="btn btn-sm btn-primary">Sửa</a>
+           <a href="role-update.html" class="btn btn-sm btn-primary btn-update" role-id = "${value.id}">Sửa</a>
              <a href="#" class="btn btn-sm btn-danger btn-delete" role-id = "${value.id}">Xóa</a>
                                             </td>
                                         </tr>`
         $("#example tbody").append(row)
     })
  })
- 
- $('body').on('click','.btn-delete',function(){
+    $('#btn-update-role').click(function(e){
+        //e.preventDefault()
+        var dataId = $(this).attr('role-id')
+        console.log(dataId)
+        var dataRole = $('#role').val()
+        var dataDescription = $('#description').val()
+        if (dataDescription == "" || dataRole == "") {
+            alert("Vui lòng nhập đầy đủ tên và mô tả");
+            return false
+        }
+        $.ajax({
+            url: `http://localhost:8080/crm_war/api/role/update`,
+            method: "PUT",
+            contentType: 'application/json',
+            data: {
+                id: dataId,
+                role: dataRole,
+                description: dataDescription
+            },
+        }).done(function(result){
+            console.log("kiemtra")
+            console.log(result)
+            if (result.isSuccess == true) {
+                console.log("sua thanh cong")
+                dataRole = $('#role').val("")
+                dataDescription = $('#description').val("")
+                $.toast({
+                    heading: 'Success',
+                    text: 'Bạn đã thêm thành công một vai trò',
+                    showHideTransition:'slide',
+                    position:'mid-center',
+                    icon: 'success'
+                })
+            }
+            else {
+                console.log("them that bai")
+            }
+
+        })
+    })
+    $('body').on('click','.btn-delete',function(){
    var roleId = $(this).attr('role-id')
    console.log(`Role id ${roleId}`)
    var This = $(this)

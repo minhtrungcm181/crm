@@ -20,7 +20,8 @@ import java.util.List;
 // api/role
 @WebServlet(name = "role",urlPatterns = {
         UrlUtils.URL_ROLE,
-        UrlUtils.URL_ROLE_ADD
+        UrlUtils.URL_ROLE_ADD,
+        UrlUtils.URL_ROLE_UPDATE
 })
 public class RoleController extends HttpServlet {
 
@@ -103,17 +104,25 @@ public class RoleController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         BufferedReader br = new BufferedReader(req.getReader());
+
+        System.out.println("doput br" + br);
         StringBuilder builder = new StringBuilder();
+        System.out.println("doput bui" + builder);
         String line;
         while((line = br.readLine()) != null){
+            System.out.println("doput line" + builder);
             builder.append(line);
         }
         String data = builder.toString();
+        System.out.println("doput" + data);
+        String jSonString = paramJson(data);
+        RoleModel roleModel = gson.fromJson(jSonString, RoleModel.class);
 
-        RoleModel roleModel = gson.fromJson(data,RoleModel.class);
+        System.out.println("kiemtra do put" + roleModel.getId());
         Integer result = RoleServices.getInstance().updateRoleById(roleModel);
-
+        System.out.println("kiemtra do put" + roleModel.getId());
         ResponseData responseData = new ResponseData();
 
         if(result == 1){
@@ -131,7 +140,11 @@ public class RoleController extends HttpServlet {
         PrintWriter printWriter = resp.getWriter();
         printWriter.print(gson.toJson(responseData));
         printWriter.flush();
-
-        System.out.println("Kimetra do Put " + roleModel.getId() + " - " + roleModel.getName());
     }
+    public static String paramJson(String paramIn) {
+        paramIn = paramIn.replaceAll("=", "\":\"");
+        paramIn = paramIn.replaceAll("&", "\",\"");
+        return "{\"" + paramIn + "\"}";
+    }
+
 }
