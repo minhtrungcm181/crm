@@ -107,22 +107,22 @@ public class RoleController extends HttpServlet {
 
         BufferedReader br = new BufferedReader(req.getReader());
 
-        System.out.println("doput br" + br);
+        //System.out.println("doput br" + br);
         StringBuilder builder = new StringBuilder();
-        System.out.println("doput bui" + builder);
+       // System.out.println("doput bui" + builder);
         String line;
         while((line = br.readLine()) != null){
-            System.out.println("doput line" + builder);
+        //    System.out.println("doput line" + builder);
             builder.append(line);
         }
         String data = builder.toString();
-        System.out.println("doput" + data);
+     //   System.out.println("doput" + data);
         String jSonString = paramJson(data);
         RoleModel roleModel = gson.fromJson(jSonString, RoleModel.class);
 
-        System.out.println("kiemtra do put" + roleModel.getId());
+     //   System.out.println("kiemtra do put" + roleModel.getId());
         Integer result = RoleServices.getInstance().updateRoleById(roleModel);
-        System.out.println("kiemtra do put" + roleModel.getId());
+      //  System.out.println("kiemtra do put" + roleModel.getId());
         ResponseData responseData = new ResponseData();
 
         if(result == 1){

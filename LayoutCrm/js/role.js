@@ -6,7 +6,7 @@ $(document).ready(function() {
  }).done(function(result){
     $("#example tbody").empty()
     $.each(result, function(index,value){
-        console.log(value)
+       //console.log(value)
        var row = `<tr>
             <td>${value.id}</td>
             <td>${value.name}</td>
@@ -19,12 +19,25 @@ $(document).ready(function() {
         $("#example tbody").append(row)
     })
  })
-    $('#btn-update-role').click(function(e){
-        //e.preventDefault()
-        var dataId = $(this).attr('role-id')
-        console.log(dataId)
+    let dataId
+   $('body').on('click','.btn-update',function(){
+          dataId = $(this).attr('role-id')
+          console.log(dataId)})
+          
+    $('#btn-update-role').click(dataId,function(e){
+      console.log(e)
+      
+      // $('body').on('click','.btn-update',function(){
+      //     roleId = $(this).attr('role-id')})
+      //   e.preventDefault()
+      //   var dataId = $(this).attr('role-id')
+      //   console.log(dataId)
+
+     // console.log(roleId)
         var dataRole = $('#role').val()
+        console.log(dataRole)
         var dataDescription = $('#description').val()
+        console.log(dataDescription)
         if (dataDescription == "" || dataRole == "") {
             alert("Vui lòng nhập đầy đủ tên và mô tả");
             return false
@@ -34,7 +47,7 @@ $(document).ready(function() {
             method: "PUT",
             contentType: 'application/json',
             data: {
-                id: dataId,
+                id: dataId1,
                 role: dataRole,
                 description: dataDescription
             },
